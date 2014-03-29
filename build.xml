@@ -14,7 +14,7 @@
     <mkdir dir="${build}"/>
   </target>
   <path id="build-classpath">
-      <fileset dir="${dist}/lib">
+    <fileset dir="${lib}">
           <include name="*.jar"/>
       </fileset>
     </path>
