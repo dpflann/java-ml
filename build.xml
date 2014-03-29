@@ -15,14 +15,27 @@
   </target>
   <path id="build-classpath">
     <fileset dir="${lib}">
-          <include name="*.jar"/>
-      </fileset>
-    </path>
+      <include name="*.jar"/>
+    </fileset>
+    <fileset dir="${src}"/>
+  </path>
 
   <target name="compile" depends="init" description="compile the source" >
     <!-- Compile the java code from ${src} into ${build} -->
     <javac srcdir="${src}" destdir="${build}" classpathref="build-classpath" includeantruntime="false"/>
   </target>
+
+  <target name="run"><!-- depends="compile"> -->
+    <!--
+         Take CLP of *.arff file to analyze and feed to the DataReader class
+         ant run -Darff=<ARFF-TO-READ>
+    -->
+    <echo message="Analyzing the ${arff} file"/>
+    <java classname="bin/DataReader" classpathref="build-classpath" failonerror="true">
+      <arg value="${arff}"/>
+    </java>
+  </target>
+
 
   <target name="clean"
     description="clean up" >
