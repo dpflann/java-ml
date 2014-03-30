@@ -3,36 +3,41 @@
   <description>
     Build file for Java Based Machine Learning Project with X.
   </description>
-  <property name="src" location="src"/>
-  <property name="build" location="bin"/>
-  <property name="lib" location="lib"/>
+  <property name="src" location="${basedir}/src/"/>
+  <property name="bin" location="${basedir}/bin/"/>
+  <property name="lib" location="${basedir}/lib/"/>
 
   <target name="init">
     <!-- Create the time stamp -->
     <tstamp/>
     <!-- Create the build directory structure used by compile -->
-    <mkdir dir="${build}"/>
+    <mkdir dir="${bin}"/>
   </target>
   <path id="build-classpath">
     <fileset dir="${lib}">
-      <include name="*.jar"/>
+      <include name="*.jar" />
     </fileset>
-    <fileset dir="${src}"/>
+    <!--<fileset dir="${bin}" />-->
+    <pathelement location="${bin}" />
   </path>
+
+  <property name="classpath" refid="build-classpath" />
+  <echo message="${classpath}" />
 
   <target name="compile" depends="init" description="compile the source" >
     <!-- Compile the java code from ${src} into ${build} -->
-    <javac srcdir="${src}" destdir="${build}" classpathref="build-classpath" includeantruntime="false"/>
+    <javac srcdir="${src}" destdir="${bin}" classpathref="build-classpath" includeantruntime="false"/>
   </target>
 
-  <target name="run"><!-- depends="compile"> -->
+  <target name="run" depends="compile">
     <!--
          Take CLP of *.arff file to analyze and feed to the DataReader class
          ant run -Darff=<ARFF-TO-READ>
     -->
     <echo message="Analyzing the ${arff} file"/>
-    <java classname="bin/DataReader" classpathref="build-classpath" failonerror="true">
+    <java classname="DataReader" failonerror="true" classpathref="build-classpath">
       <arg value="${arff}"/>
+     
     </java>
   </target>
 
