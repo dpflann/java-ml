@@ -1,0 +1,35 @@
+#!/bin/bash
+# Using tput for text coloring: http://en.wikipedia.org/wiki/Tput
+
+### Establish variables
+af="tput setaf"
+end="tput sgr 0"
+datasets=$(ls ./lib/regression-datasets)
+options="$datasets exit"
+PS3="$($af 6)Selection #: $($end)" # special prompt used for 'select' command
+
+### Enter program here
+echo "$($af 6)Please select the dataset you wish to use (or exit):$($end)"
+
+select name in $options;
+  do
+    case $name in 
+      "exit")
+        echo -e "$($af 4)Exiting...$($end)"
+        break
+        ;;
+      "")
+        echo -e "$($af 1)Invalid selection. Please select again or exit.$($end)"
+        ;;
+      *)
+        echo -e "$($af 6)Selected: $($af 2)$name $($end)"
+        break
+        ;;
+  esac
+done
+
+# Right now, our datasets are 'arff' files. Ensure file is an .arff before running.
+if [[ "$name" == *".arff" ]];
+  then
+    ant run "-Darff=./lib/regression-datasets/$name"
+fi
